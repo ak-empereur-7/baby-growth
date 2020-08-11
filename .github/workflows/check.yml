@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: babygrowth/babygrowth-rails-ci:latest
+      image: empereur7/babygrowth-rails-ci:latest
     env:
       RAILS_ENV: test
       DB_CONNECTION: mysql
