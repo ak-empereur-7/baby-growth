@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-readonly OrganizationName=babygrowth
+readonly OrganizationName=empereur7
 readonly RepositoryName=babygrowth-rails-ci
 
 function build_and_push_image() {
