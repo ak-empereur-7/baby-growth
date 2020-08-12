@@ -58,7 +58,7 @@ jobs:
           script/dockerlint
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
-          bundle exec rubocop
+          bundle exec rubocop --fail-level W --display-only-fail-level-offenses
           bundle exec rake db:setup
           yarn
           bundle exec rake test
