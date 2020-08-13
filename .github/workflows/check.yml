@@ -40,6 +40,6 @@ jobs:
           mysql root password: 'mysql'
           mysql user: 'mysql'
           mysql password: 'mysql'
-      - run: bundle exec rake db:setup
       - run: bundle exec rake webpacker:install
+      - run: bundle exec rake db:setup
       - run: bundle exec rake test
