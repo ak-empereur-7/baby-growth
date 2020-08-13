@@ -38,6 +38,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - run: bundle config path vendor/bundle
+      - run: bundle install --jobs 4 --retry 3
       - run: bundle exec rake db:setup
       - run: bundle exec rake webpacker:install
       - run: bundle exec rake test
