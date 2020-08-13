@@ -16,6 +16,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Cache gems
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
+      - name: Cache node packages
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
       - run: bundle config path vendor/bundle
       - run: bundle install --jobs 4 --retry 3
       - uses: mirromutth/mysql-action@v1.1
