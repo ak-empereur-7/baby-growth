@@ -41,6 +41,7 @@ jobs:
           mysql user: 'mysql'
           mysql password: 'mysql'
       - run: yarn install
+      - run: sudo /etc/init.d/mysql start
       - run: bundle exec rake db:setup
       - run: bundle exec rake webpacker:install
       - run: bundle exec rake test
