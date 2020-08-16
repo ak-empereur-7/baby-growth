@@ -51,7 +51,7 @@ jobs:
       - run: gem install bundler -v 2.1.4
       - run:
           name: Bundle Install
-          command: bin/bundle check --path vendor/bundle || bin/bundle install --path vendor/bundle --jobs 4 --retry 3
+          command: bundle install --jobs=4 --retry=3 --path vendor/bundle
       - save_cache:
           name: Store bundle cache
           key: solos-bundle-{{ checksum "Gemfile.lock" }}
