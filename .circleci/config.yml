@@ -8,33 +8,32 @@ jobs:
   build:
     working_directory: ~/baby-growth
     docker:
-      - image: circleci/ruby:2.7.1
+      - image: circleci/ruby:2.7.1-node-browsers
         environment:
           RAILS_ENV: test
           DB_USER: mysql
           DB_PASSWORD: mysql
           DB_HOST: '127.0.0.1'
-      - image: circleci/mysql:8.0.13-ram
+      - image: circleci/mysql:8.0.21-ram
         command: |
           mysqld --default-authentication-plugin=mysql_native_password
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: sample_test
+          MYSQL_DATABASE: test
           MYSQL_HOST: 127.0.0.1
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_USER: mysql
           MYSQL_PASSWORD: mysql
           MYSQL_ROOT_HOST: '%'
-  steps:
+    steps:
       - checkout
-
       - run:
           name: Install System Dependencies
           command: |
             sudo apt-get update
             sudo apt-get install build-essential patch ruby-dev zlib1g-dev liblzma-dev
             sudo apt-get install -y lsb-release mysql-client
-            - run:
+      - run:
           name: Install dockerize
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
           environment:
