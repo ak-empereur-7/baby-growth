@@ -1,8 +1,68 @@
-version: 2.1
+version: 2
+general:
+  branches:
+    only:
+      - develop
+
 jobs:
   build:
-    docker: 
-      - image: circleci/node:4.8.2 # the primary container, where your job's commands are run
-    steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command 
+    working_directory: ~/baby-growth
+    docker:
+      - image: circleci/ruby:2.7.1
+        environment:
+          RAILS_ENV: test
+          DB_USER: mysql
+          DB_PASSWORD: mysql
+          DB_HOST: '127.0.0.1'
+      - image: circleci/mysql:8.0.13-ram
+        command: |
+          mysqld --default-authentication-plugin=mysql_native_password
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: sample_test
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_USER: mysql
+          MYSQL_PASSWORD: mysql
+          MYSQL_ROOT_HOST: '%'
+  steps:
+      - checkout
+
+      - run:
+          name: Install System Dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install build-essential patch ruby-dev zlib1g-dev liblzma-dev
+            sudo apt-get install -y lsb-release mysql-client
+            - run:
+          name: Install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.6.1
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 3m
+
+      - restore_cache:
+          name: Restore bundle cache
+          keys:
+            - solos-bundle-{{ checksum "Gemfile.lock" }}
+            - solos-bundle-
+
+      - run:
+          name: Bundle Install
+          command: bin/bundle check --path vendor/bundle || bin/bundle install --path vendor/bundle --jobs 4 --retry 3
+      - save_cache:
+          name: Store bundle cache
+          key: solos-bundle-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      - store_artifacts:
+          path: doc
+
+      - run:
+          name: Set up DB
+          command: |
+            bundle exec rake db:create
+            bundle exec rake db:schema:load
