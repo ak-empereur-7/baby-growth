@@ -32,7 +32,7 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install build-essential patch ruby-dev zlib1g-dev liblzma-dev
-            sudo apt-get install -y lsb-release mysql-client
+            sudo apt-get install -y lsb-release default-mysql-client
       - run:
           name: Install dockerize
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
