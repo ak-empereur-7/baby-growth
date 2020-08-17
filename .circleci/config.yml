@@ -65,3 +65,15 @@ jobs:
           command: |
             bundle exec rake db:create
             bundle exec rake db:schema:load
+
+      - run:
+          name: Run shellcheck
+          command: script/shellcheck
+
+      - run:
+          name: Run dockerlint
+          command: script/dockerlint
+
+      - run:
+          name: Run RuboCop
+          command: bundle exec rubocop --fail-level W --display-only-fail-level-offenses
