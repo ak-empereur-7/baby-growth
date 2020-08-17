@@ -8,7 +8,7 @@ jobs:
   build:
     working_directory: ~/baby-growth
     docker:
-      - image: circleci/ruby:2.7.1-node-browsers
+      - image: empereur7/babygrowth-rails-ci:latest
         environment:
           RAILS_ENV: test
           DB_USER: mysql
