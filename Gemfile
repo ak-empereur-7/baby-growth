@@ -44,6 +44,7 @@ group :development do
   gem 'spring'
   gem 'spring-commands-rspec', '1.0.4'
   gem 'spring-watcher-listen', '2.0.1'
+  gem 'devise'
 end
 
 group :test do
